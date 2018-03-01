@@ -1,0 +1,13 @@
+{
+    "name": "stas/stas-hr-sms",
+    "type": "project",
+    "authors": [
+        {
+            "name": "yaecho",
+            "email": "root@yaecho.net"
+        }
+    ],
+    "require": {
+        "yunpian/yunpian-php-sdk" : "~1.0"
+    }
+}
