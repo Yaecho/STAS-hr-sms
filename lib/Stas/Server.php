@@ -2,24 +2,61 @@
 
 namespace Stas;
 
+use \Stas\Event;
+
 class Server
 {
-    protected static $daemonize = true;
+    protected static $daemonize = false;
 
     protected static $stdfile = '/dev/null';
 
-    private static $masterPid = 0;
-
     protected static $pidFile = __DIR__ . '/../pid';
 
+    private static $masterPid = 0;
+
+    /**
+     * 程序运行入口
+     *
+     * @return void
+     * @author Yaecho 
+     */
     public static function run()
     {
+        declare (ticks = 1);
+        //解析命令行
+        self::parseCommand();
         //开启守护
         self::daemon();
+        //保存主进程pid
         self::saveMasterPid();
-        while(1) {
-            sleep(10);
+        //注册信号量
+        self::installSignal();
+        Event::loadMap(array('start', 'end'));
+        Event::add('start', function () {
+            echo 1;
+            sleep(1);
+        });
+        Event::loop();
+    }
+
+    /**
+     * 解析命令行
+     *
+     * @return void
+     * @author Yaecho 
+     */
+    public static function parseCommand()
+    {
+        global $argv;
+        if (!isset($argv[1])) {
+            return;
         }
+        switch ($argv[1]) {
+            case 'stop':
+                static::callStop();
+                exit(0);
+        }
+
     }
 
     /**
@@ -89,5 +126,37 @@ class Server
     {
         static::$masterPid = posix_getpid();
         file_put_contents(static::$pidFile, static::$masterPid);
+    }
+
+    /**
+     * 停止
+     *
+     * @return void
+     * @author Yaecho 
+     */
+    protected static function callStop()
+    {
+        $master_pid = is_file(static::$pidFile) ? file_get_contents(static::$pidFile) : 0;
+        $master_is_alive = $master_pid && @posix_kill($master_pid, 0) && posix_getpid() != $master_pid;
+        if (!$master_is_alive) {
+            echo 'SMS SYSTEM NOT RUNIND';
+            return;
+        }
+        posix_kill($master_pid, SIGINT);
+    }
+
+    /**
+     * Install signal handler.
+     *
+     * @return void
+     */
+    protected static function installSignal()
+    {
+        // stop
+        pcntl_signal(SIGINT, function () {
+            Event::add('end', function () {
+                exit(0);
+            });
+        }, false);
     }
 }
