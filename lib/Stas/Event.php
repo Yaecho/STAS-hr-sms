@@ -39,6 +39,20 @@ class Event
     }
 
     /**
+     * 删除tag下所有函数
+     *
+     * @param string $tag
+     * @return void
+     * @author Yaecho 
+     */
+    public static function remove(string $tag)
+    {
+        if (array_key_exists($tag, self::$funcs)) {
+            unset(self::$funcs[$tag]);
+        }
+    }
+
+    /**
      * 加载运作tag的索引
      *
      * @param array $map 运作tag的索引
