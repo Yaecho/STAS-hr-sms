@@ -6,12 +6,36 @@ use \Stas\Event;
 
 class Server
 {
+    /**
+     * 是否在后台运行
+     *
+     * @var boolean
+     * @author Yaecho 
+     */
     protected static $daemonize = false;
 
+    /**
+     * 标准输出文件
+     *
+     * @var string
+     * @author Yaecho 
+     */
     protected static $stdfile = '/dev/null';
 
+    /**
+     * pid值存放文件
+     *
+     * @var string
+     * @author Yaecho 
+     */
     protected static $pidFile = __DIR__ . '/../pid';
 
+    /**
+     * 主进程pid
+     *
+     * @var integer
+     * @author Yaecho 
+     */
     private static $masterPid = 0;
 
     /**
@@ -31,10 +55,10 @@ class Server
         self::saveMasterPid();
         //注册信号量
         self::installSignal();
+        
         Event::loadMap(array('start', 'end'));
         Event::add('start', function () {
-            echo 1;
-            sleep(1);
+            //查询
         });
         Event::loop();
     }
