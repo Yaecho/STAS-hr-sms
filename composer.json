@@ -8,6 +8,7 @@
         }
     ],
     "require": {
-        "yunpian/yunpian-php-sdk" : "~1.0"
+        "yunpian/yunpian-php-sdk" : "~1.0",
+        "catfan/medoo": "^1.5"
     }
 }
