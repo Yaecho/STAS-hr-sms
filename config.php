@@ -12,6 +12,6 @@ return array(
         'port' => 3306,
 
         // [optional] Table prefix
-        'prefix' => 'PREFIX_',
+        //'prefix' => '',
     )
 );
