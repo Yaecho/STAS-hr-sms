@@ -2,7 +2,8 @@
 
 namespace Stas;
 
-use \Stas\Event;
+use Stas\Event;
+use Stas\App;
 
 class Server
 {
@@ -46,20 +47,18 @@ class Server
      */
     public static function run()
     {
-        declare (ticks = 1);
         //解析命令行
         self::parseCommand();
+        //应用初始化
+        $app = new App();
+        $app->init();
         //开启守护
         self::daemon();
         //保存主进程pid
         self::saveMasterPid();
         //注册信号量
         self::installSignal();
-        
-        Event::loadMap(array('start', 'end'));
-        Event::add('start', function () {
-            //查询
-        });
+        //事件循环
         Event::loop();
     }
 
@@ -182,5 +181,10 @@ class Server
                 exit(0);
             });
         }, false);
+        // 添加信号触发
+        Event::add('end', function() {
+            //信号分发
+            pcntl_signal_dispatch();
+        });
     }
 }
