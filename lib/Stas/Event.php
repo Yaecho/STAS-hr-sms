@@ -26,6 +26,14 @@ class Event
     private static $map = array();
 
     /**
+     * 缓存数据
+     *
+     * @var array
+     * @author Yaecho 
+     */
+    protected static $data = array();
+
+    /**
      * 新增事件
      *
      * @param string $tag 标签
@@ -107,4 +115,31 @@ class Event
         }
     }
 
+    /**
+     * 保存数据
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     * @author Yaecho 
+     */
+    public static function set(string $name, $value) {
+        if (array_key_exists($name, static::$data)) {
+            return false;
+        }
+        static::$data[$name] = $value;
+        return true;
+    }
+
+    /**
+     * 取出数据
+     *
+     * @param string $name
+     * @return void
+     * @author Yaecho 
+     */
+    public static function get(string $name)
+    {
+        return static::$data[$name];
+    }
 }
