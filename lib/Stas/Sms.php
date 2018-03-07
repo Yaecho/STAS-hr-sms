@@ -49,13 +49,19 @@ class Sms
 
     public $error = array();
 
+    private $driver;
+
+    public function __construct(SmsDriverInterface $driver)
+    {
+        $this->driver = $driver;
+    }
     /**
      * 发送短信
      *
      * @return bool
      * @author Yaecho 
      */
-    public function send($driver)
+    public function send()
     {
         //拼装短信
         $realContent = $this->parseContent();
@@ -67,10 +73,10 @@ class Sms
                 sleep($this->sleepTime);
             }
             //发送
-            $res = $driver->send($number, $realContent);
+            $res = $this->driver->send($number, $realContent);
             //错误记录
             if (!$res) {
-                $this->error[$number] = $driver->error;
+                $this->error[$number] = $this->driver->getError();
             }
         }
     }
