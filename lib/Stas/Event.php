@@ -120,11 +120,12 @@ class Event
      *
      * @param string $name
      * @param mixed $value
+     * @param bool $no_cover true不覆盖，false覆盖
      * @return void
      * @author Yaecho 
      */
-    public static function set(string $name, $value) {
-        if (array_key_exists($name, static::$data)) {
+    public static function set(string $name, $value, bool $no_cover = true) {
+        if (array_key_exists($name, static::$data) && $no_cover) {
             return false;
         }
         static::$data[$name] = $value;
