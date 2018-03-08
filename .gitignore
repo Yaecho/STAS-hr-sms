@@ -1,2 +1,4 @@
-
+/.vscode/
 /vendor/
+pid
+config.php
