@@ -5,4 +5,7 @@ require_once __DIR__ . '/lib/autoload.php';
 
 use Stas\Server;
 
+global $APP_CONFIG;
+$APP_CONFIG = require_once __DIR__ . '/config.php';
+
 Server::run();

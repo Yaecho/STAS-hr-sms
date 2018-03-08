@@ -21,7 +21,7 @@ class Server
      * @var string
      * @author Yaecho 
      */
-    protected static $stdfile = '/dev/null';
+    protected static $stdfile = __DIR__ . '/../../log';
 
     /**
      * pid值存放文件
@@ -29,7 +29,7 @@ class Server
      * @var string
      * @author Yaecho 
      */
-    protected static $pidFile = __DIR__ . '/../pid';
+    protected static $pidFile = __DIR__ . '/../../pid';
 
     /**
      * 主进程pid
@@ -47,17 +47,19 @@ class Server
      */
     public static function run()
     {
+        global $APP_CONFIG;
+        static::$daemonize = $APP_CONFIG['daemonize'];
         //解析命令行
         self::parseCommand();
-        //应用初始化
-        $app = new App();
-        $app->init();
         //开启守护
         self::daemon();
         //保存主进程pid
         self::saveMasterPid();
         //注册信号量
         self::installSignal();
+        //应用初始化
+        $app = new App();
+        $app->init();
         //事件循环
         Event::loop();
     }
