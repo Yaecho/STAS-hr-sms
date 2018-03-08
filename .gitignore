@@ -1,4 +1,5 @@
 /.vscode/
 /vendor/
-pid
-config.php
+/pid
+/log
+/config.php
