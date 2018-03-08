@@ -50,7 +50,6 @@ class App
             
             //查出一条短信
             $data = $Medoo->get('resume', ['id', 'phone', 'code'], ['ORDER' => 'id', 'not_recycling' => '1', 'res' => '0', 'is_send' => '0']);
-            \var_dump($data);
             if (!$data) {
                 sleep(5);
                 return false;
