@@ -41,7 +41,7 @@ class Event
      * @return void
      * @author Yaecho 
      */
-    public static function add(string $tag, $func)
+    public static function add($tag, $func)
     {
         self::$funcs[$tag][] = $func;
     }
@@ -53,7 +53,7 @@ class Event
      * @return void
      * @author Yaecho 
      */
-    public static function remove(string $tag)
+    public static function remove($tag)
     {
         if (array_key_exists($tag, self::$funcs)) {
             unset(self::$funcs[$tag]);
@@ -67,7 +67,7 @@ class Event
      * @return void
      * @author Yaecho 
      */
-    public static function loadMap(array $map)
+    public static function loadMap($map)
     {
         static::$map = $map;
     }
@@ -95,7 +95,7 @@ class Event
      * @return void
      * @author Yaecho 
      */
-    protected static function trigger(string $tag)
+    protected static function trigger($tag)
     {
         if (!array_key_exists($tag, self::$funcs)) {
             return;
@@ -124,7 +124,7 @@ class Event
      * @return void
      * @author Yaecho 
      */
-    public static function set(string $name, $value, bool $no_cover = true) {
+    public static function set($name, $value, $no_cover = true) {
         if (array_key_exists($name, static::$data) && $no_cover) {
             return false;
         }
@@ -139,7 +139,7 @@ class Event
      * @return void
      * @author Yaecho 
      */
-    public static function get(string $name)
+    public static function get($name)
     {
         return static::$data[$name];
     }
